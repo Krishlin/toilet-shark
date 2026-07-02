@@ -316,6 +316,8 @@ a { color: inherit; }
   display: flex; flex-direction: column; min-height: 360px;
 }
 .target:hover { transform: translate(-2px,-2px); box-shadow: var(--pop); }
+/* town cards have no signs list to fill the height — let them size to content */
+.targets--towns .target { min-height: 0; }
 .target__ico {
   width: 65px; height: 65px; display: grid; place-items: center; color: var(--red);
   background: var(--gold); border: 3px solid var(--ink); border-radius: 9px; margin-bottom: 1.3rem;
