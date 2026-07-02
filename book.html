@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book a Visit | Toilet Shark — No Clog Is Safe</title>
+<meta name="description" content="Request a drain-cleaning visit from Toilet Shark. Tell us your address, what's clogged, and send a photo of the problem. No clog is safe.">
+<meta name="robots" content="noindex"><!-- design mockup, not for indexing -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#order">Skip to the form</a>
+
+<!-- ===== Sticky bar ===== -->
+<header class="bar">
+  <div class="container bar__in">
+    <a href="index.html" aria-label="Toilet Shark — home"><img class="bar__logo" src="assets/wordmark.png" alt="Toilet Shark"></a>
+    <nav class="bar__nav" aria-label="Primary">
+      <a href="services.html">Services</a>
+      <a href="service-area.html">Service area</a>
+      <a href="about.html">About</a>
+      <a href="reviews.html">Reviews</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <span class="bar__spacer"></span>
+    <a class="bar__call" href="tel:+18158144666">
+      <svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.6 15.6 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.24 1Z"/></svg>
+      <span>815-814-4666<small>Call or text 24/7</small></span>
+    </a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="container hero__in">
+      <div class="hero__copy">
+        <p class="eyebrow">Appointment request</p>
+        <h1 class="display">Book the <span class="pop-blue">Shark</span>.<br>Sic it on your <span class="pop-red">clog</span>.</h1>
+        <p class="hero__sub">Tell us where it is, what it's doing, and snap a photo of the mess. We'll call you back to lock in a time — and show up ready to bite.</p>
+        <div class="hero__cta">
+          <a class="btn btn--red" href="#order">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            Fill the work order
+          </a>
+          <a class="btn btn--ghost" href="tel:+18158144666">Call 815-814-4666</a>
+        </div>
+        <p class="hero__note">Real emergency — burst pipe, sewage backup, no water? Skip the form and call. We answer 24/7.</p>
+      </div>
+
+      <div class="hero__art">
+        <div class="frame"><img src="assets/mascot.jpg" alt="The Toilet Shark mascot, a muscular shark bursting out of a toilet" width="360" height="480"></div>
+        <img class="hero__patch" src="assets/patch.png" alt="No clog is safe" width="150" height="150">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Hazard-tape divider ===== -->
+  <div class="tape"><span>Service request below</span></div>
+
+  <!-- ===== The work order ===== -->
+  <section class="order" id="order">
+    <div class="container">
+      <div class="order__head">
+        <h2 class="display">File your work order</h2>
+        <p>Four quick things and a photo. The more we know, the faster we chomp it.</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel__ticket">
+          <h3>Service request</h3>
+          <span class="tag">No clog is safe!!</span>
+        </div>
+        <img class="panel__stamp" src="assets/badge.png" alt="" aria-hidden="true" width="104" height="104">
+
+        <div class="panel__body">
+          <!-- Design mockup: intentionally not wired to a backend. -->
+          <form novalidate>
+            <div class="row">
+              <div class="field">
+                <label for="name">Your name</label>
+                <input id="name" name="name" type="text" autocomplete="name" placeholder="Jane Homeowner">
+              </div>
+              <div class="field">
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="815-000-0000">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="address">Service address</label>
+              <input id="address" name="address" type="text" autocomplete="street-address" placeholder="Where's the shark going? Street, city, ZIP">
+            </div>
+
+            <div class="field">
+              <label for="problem">What's the shark hunting?</label>
+              <textarea id="problem" name="problem" placeholder="Tell us what's clogged or backing up — which drain or toilet, how long it's been going, anything you've already tried."></textarea>
+            </div>
+
+            <div class="field">
+              <label id="photo-label">Show us the beast <span class="opt">— photos of the problem</span></label>
+              <label class="dropzone" for="photos" aria-labelledby="photo-label">
+                <svg class="dropzone__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1L9 4h6l1.5 2h1A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5Z"/>
+                  <circle cx="12" cy="12.5" r="3.3"/>
+                </svg>
+                <strong>Drag photos here, or tap to upload</strong>
+                <span>A clear shot of the drain, toilet, or leak helps us bring the right gear. <span class="pick">Choose files</span></span>
+                <input id="photos" name="photos" type="file" accept="image/*" multiple>
+              </label>
+            </div>
+
+            <div class="form-foot">
+              <!-- Non-functional in this mockup — see the note below to preview the confirmation screen. -->
+              <button class="btn btn--red btn--block" type="button">Send it to the shark →</button>
+              <p class="fineprint">We'll call you back to confirm a time. Prefer to talk now? <a href="tel:+18158144666">Call 815-814-4666</a>.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <p class="mock-note">Design preview — the form isn't hooked up yet. <a href="booked.html">See the confirmation screen →</a></p>
+    </div>
+  </section>
+
+  <!-- ===== Trust bursts ===== -->
+  <section class="trust">
+    <div class="container">
+      <h2>Why call the shark</h2>
+      <div class="bursts">
+        <div class="burst">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <strong>24/7 emergency</strong>
+          <span>We answer day, night, and weekends.</span>
+        </div>
+        <div class="burst">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v18M7 7h7a2.5 2.5 0 0 1 0 5H9a2.5 2.5 0 0 0 0 5h7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <strong>Upfront pricing</strong>
+          <span>Flat quote first. No hidden fees.</span>
+        </div>
+        <div class="burst">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3 5 6v5c0 4.2 2.8 7.6 7 9 4.2-1.4 7-4.8 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <strong>Licensed &amp; insured</strong>
+          <span>All work is guaranteed.</span>
+        </div>
+        <div class="burst">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z" stroke-linejoin="round"/></svg>
+          <strong>Same-day service</strong>
+          <span>Quick response, locally owned.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="container foot__in">
+    <img class="foot__logo" src="assets/wordmark.png" alt="Toilet Shark">
+    <a class="foot__call" href="tel:+18158144666">815-814-4666</a>
+    <small>Toilet Shark · Drain cleaning &amp; sewer service · Licensed &amp; insured · Locally owned &amp; operated · No clog is safe!!</small>
+  </div>
+</footer>
+
+</body>
+</html>
