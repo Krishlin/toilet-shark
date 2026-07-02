@@ -21,7 +21,8 @@
     <nav class="bar__nav" aria-label="Primary">
       <a href="services.html">Services</a>
       <a href="service-area.html">Service area</a>
-      <a href="about.html">About</a>
+      <!-- About nav link hidden for now — restore by uncommenting -->
+      <!-- <a href="about.html">About</a> -->
       <a href="reviews.html">Reviews</a>
       <a href="contact.html">Contact</a>
     </nav>
@@ -78,8 +79,7 @@
         <img class="panel__stamp" src="assets/badge.png" alt="" aria-hidden="true" width="104" height="104">
 
         <div class="panel__body">
-          <!-- Design mockup: intentionally not wired to a backend. -->
-          <form novalidate>
+          <form id="book-form" novalidate>
             <div class="row">
               <div class="field">
                 <label for="name">Your name</label>
@@ -112,18 +112,24 @@
                 <span>A clear shot of the drain, toilet, or leak helps us bring the right gear. <span class="pick">Choose files</span></span>
                 <input id="photos" name="photos" type="file" accept="image/*" multiple>
               </label>
+              <div class="preview" id="photo-preview" aria-live="polite"></div>
+              <p class="preview__count" id="photo-count" role="status" hidden></p>
+            </div>
+
+            <!-- Honeypot: hidden from people; bots that fill it are dropped server-side. -->
+            <div class="hp" aria-hidden="true">
+              <label for="fax">Fax</label>
+              <input id="fax" name="fax" type="text" tabindex="-1" autocomplete="off">
             </div>
 
             <div class="form-foot">
-              <!-- Non-functional in this mockup — see the note below to preview the confirmation screen. -->
-              <button class="btn btn--red btn--block" type="button">Send it to the shark →</button>
+              <button class="btn btn--red btn--block" type="submit" id="book-submit">Send it to the shark →</button>
+              <p class="form-status" id="book-status" role="alert" hidden></p>
               <p class="fineprint">We'll call you back to confirm a time. Prefer to talk now? <a href="tel:+18158144666">Call 815-814-4666</a>.</p>
             </div>
           </form>
         </div>
       </div>
-
-      <p class="mock-note">Design preview — the form isn't hooked up yet. <a href="booked.html">See the confirmation screen →</a></p>
     </div>
   </section>
 
@@ -157,6 +163,210 @@
   </section>
 
 </main>
+
+<script>
+(function () {
+  const form = document.getElementById("book-form");
+  if (!form) return;
+  const btn = document.getElementById("book-submit");
+  const statusEl = document.getElementById("book-status");
+  const input = document.getElementById("photos");
+  const dropzone = document.querySelector(".dropzone");
+  const gallery = document.getElementById("photo-preview");
+  const countEl = document.getElementById("photo-count");
+  const PHONE = 'call <a href="tel:+18158144666">815-814-4666</a>';
+  const MAX_PHOTOS = 4;
+
+  // Each entry: { id, name, sizeBytes, url (objectURL of the compressed blob), content (base64) }.
+  // We compress on selection so the on-screen thumbnail IS the image the owner receives.
+  let selected = [];
+  let busy = false;
+
+  function showError(text) {
+    statusEl.innerHTML = text + " You can also " + PHONE + " — we answer 24/7.";
+    statusEl.classList.add("form-status--error");
+    statusEl.hidden = false;
+  }
+
+  function fmtSize(bytes) {
+    return bytes < 1024 * 1024
+      ? Math.max(1, Math.round(bytes / 1024)) + " KB"
+      : (bytes / (1024 * 1024)).toFixed(1) + " MB";
+  }
+
+  function setCount(text, isError) {
+    countEl.textContent = text || "";
+    countEl.hidden = !text;
+    countEl.classList.toggle("preview__count--error", !!isError);
+  }
+
+  // Shrink a photo in-browser and hand back the compressed JPEG as a Blob.
+  function compressToBlob(file, maxEdge, quality) {
+    return new Promise(function (resolve, reject) {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = function () {
+        let w = img.naturalWidth, h = img.naturalHeight;
+        if (w >= h && w > maxEdge) { h = Math.round(h * maxEdge / w); w = maxEdge; }
+        else if (h > maxEdge) { w = Math.round(w * maxEdge / h); h = maxEdge; }
+        const canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        URL.revokeObjectURL(url);
+        canvas.toBlob(function (blob) {
+          blob ? resolve(blob) : reject(new Error("encode failed"));
+        }, "image/jpeg", quality);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); reject(new Error("decode failed")); };
+      img.src = url;
+    });
+  }
+
+  function blobToBase64(blob) {
+    return new Promise(function (resolve, reject) {
+      const fr = new FileReader();
+      fr.onload = function () { resolve(String(fr.result).split(",")[1]); };
+      fr.onerror = reject;
+      fr.readAsDataURL(blob);
+    });
+  }
+
+  function render() {
+    gallery.innerHTML = "";
+    selected.forEach(function (item) {
+      const fig = document.createElement("figure");
+      fig.className = "preview__item";
+
+      const img = document.createElement("img");
+      img.className = "preview__thumb";
+      img.src = item.url;
+      img.alt = item.name;
+
+      const meta = document.createElement("figcaption");
+      meta.className = "preview__meta";
+      const nameEl = document.createElement("span");
+      nameEl.className = "preview__name";
+      nameEl.textContent = item.name;   // textContent: filenames never become markup
+      nameEl.title = item.name;
+      const sizeEl = document.createElement("span");
+      sizeEl.className = "preview__size";
+      sizeEl.textContent = fmtSize(item.sizeBytes);
+      meta.appendChild(nameEl);
+      meta.appendChild(sizeEl);
+
+      const remove = document.createElement("button");
+      remove.type = "button";           // must not submit the form
+      remove.className = "preview__remove";
+      remove.setAttribute("aria-label", "Remove " + item.name);
+      remove.textContent = "×";
+      remove.addEventListener("click", function () { removeItem(item.id); });
+
+      fig.appendChild(img);
+      fig.appendChild(meta);
+      fig.appendChild(remove);
+      gallery.appendChild(fig);
+    });
+
+    const n = selected.length;
+    if (busy) setCount("Processing photo…");
+    else if (n) setCount(n === 1 ? "1 photo ready ✓" : n + " photos ready ✓");
+    else setCount("");
+  }
+
+  function removeItem(id) {
+    const i = selected.findIndex(function (s) { return s.id === id; });
+    if (i >= 0) { URL.revokeObjectURL(selected[i].url); selected.splice(i, 1); render(); }
+  }
+
+  async function addFiles(fileList) {
+    const files = Array.prototype.slice.call(fileList || []);
+    if (!files.length) return;
+    let skipped = 0, overflow = 0;
+    busy = true; render();
+    for (const file of files) {
+      if (selected.length >= MAX_PHOTOS) { overflow++; continue; }
+      if (file.type && file.type.indexOf("image/") !== 0) { skipped++; continue; }
+      try {
+        const blob = await compressToBlob(file, 1600, 0.7);
+        const content = await blobToBase64(blob);
+        const base = (file.name || "photo").replace(/\.[^.]+$/, "");
+        selected.push({
+          id: (self.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now() + Math.random()),
+          name: base + ".jpg",
+          sizeBytes: blob.size,
+          url: URL.createObjectURL(blob),
+          content: content,
+        });
+      } catch (err) { skipped++; }  // e.g. some HEIC the browser can't decode
+    }
+    busy = false;
+    input.value = "";               // allow re-selecting the same file after a remove
+    render();
+    if (overflow) setCount("Up to " + MAX_PHOTOS + " photos — the extra ones were skipped.", true);
+    else if (skipped) setCount(skipped + " file(s) couldn't be added — try a JPEG or PNG.", true);
+  }
+
+  input.addEventListener("change", function () { addFiles(input.files); });
+
+  // Drag & drop onto the dropzone.
+  ["dragenter", "dragover"].forEach(function (ev) {
+    dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.add("dropzone--over"); });
+  });
+  ["dragleave", "dragend", "drop"].forEach(function (ev) {
+    dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.remove("dropzone--over"); });
+  });
+  dropzone.addEventListener("drop", function (e) {
+    if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files);
+  });
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    statusEl.hidden = true;
+    statusEl.classList.remove("form-status--error");
+
+    const data = new FormData(form);
+    const name = (data.get("name") || "").toString().trim();
+    const phone = (data.get("phone") || "").toString().trim();
+    const address = (data.get("address") || "").toString().trim();
+    const problem = (data.get("problem") || "").toString().trim();
+    const fax = (data.get("fax") || "").toString().trim();
+
+    const missing = [];
+    if (!name) missing.push("your name");
+    if (!phone) missing.push("a phone number");
+    if (!address) missing.push("the service address");
+    if (missing.length) { showError("Please add " + missing.join(", ") + "."); return; }
+
+    if (busy) { showError("Hang on a second — a photo is still processing."); return; }
+
+    const original = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "Sending…";
+
+    try {
+      // Photos are already compressed and cached from selection — just attach them.
+      const photos = selected.map(function (s) { return { filename: s.name, content: s.content }; });
+
+      const resp = await fetch("/api/book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name, phone: phone, address: address, problem: problem, fax: fax, photos: photos }),
+      });
+
+      if (resp.ok) { window.location.href = "booked.html"; return; }
+
+      let msg = "Something went wrong sending your request.";
+      try { const j = await resp.json(); if (j && j.error) msg = j.error; } catch (err) {}
+      showError(msg);
+    } catch (err) {
+      showError("We couldn't reach our server.");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = original;
+    }
+  });
+})();
+</script>
 
 <footer class="foot">
   <div class="container foot__in">

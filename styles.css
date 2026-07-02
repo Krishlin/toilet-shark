@@ -487,3 +487,31 @@ a { color: inherit; }
   .crew { grid-template-columns: repeat(2, 1fr); }
   .contact-grid { grid-template-columns: 1fr; }
 }
+
+/* ===== Booking form: honeypot + submit status ===== */
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form-status { margin: 12px 0 0; font-weight: 700; color: var(--ink); }
+.form-status--error { color: var(--red); }
+
+/* ===== Booking form: selected-photo previews ===== */
+.preview { display: flex; flex-wrap: wrap; gap: .7rem; }
+.preview:not(:empty) { margin-top: .85rem; }
+.preview__item {
+  position: relative; width: 104px; margin: 0;
+  border: 3px solid var(--ink); border-radius: 9px;
+  background: var(--white); box-shadow: var(--pop-sm); overflow: hidden;
+}
+.preview__thumb { width: 100%; height: 76px; object-fit: cover; display: block; border-bottom: 3px solid var(--ink); }
+.preview__meta { display: block; padding: .32rem .42rem; }
+.preview__name { display: block; font-size: .66rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.preview__size { display: block; font-size: .6rem; color: #666; margin-top: .1rem; }
+.preview__remove {
+  position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; padding: 0;
+  display: grid; place-items: center; font-size: 15px; line-height: 1; font-weight: 900;
+  color: #fff; background: var(--red); border: 2px solid var(--ink); border-radius: 50%;
+  cursor: pointer; box-shadow: 2px 2px 0 rgba(0, 0, 0, .4);
+}
+.preview__remove:hover { transform: translateY(-1px); }
+.preview__count { margin: .7rem 0 0; font-weight: 700; color: var(--blue); }
+.preview__count--error { color: var(--red); }
+.dropzone--over { outline: 3px dashed var(--blue); outline-offset: 3px; }
