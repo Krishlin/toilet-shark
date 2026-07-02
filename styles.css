@@ -38,6 +38,16 @@ body {
   background: var(--paper);
   -webkit-font-smoothing: antialiased;
 }
+
+/* Desktop "baked-in 150% zoom" — the site reads better at browser-zoom 150%,
+   so on computer-width screens we apply that with CSS `zoom` (not transform:
+   scale). `zoom` reflows like real browser zoom: percentage widths resolve in
+   the zoomed space, so everything is 1.5x with no horizontal scrollbar and the
+   desktop layout is preserved. Phones/tablets (<1024px) stay at 1:1. */
+@media (min-width: 1024px) {
+  body { zoom: 1.5; }
+}
+
 img, svg { display: block; max-width: 100%; }
 a { color: inherit; }
 :focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
