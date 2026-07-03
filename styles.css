@@ -1,7 +1,7 @@
 /* =========================================================================
-   TOILET SHARK — "Monster-comic work order" design system
+   TOILET SHARK - "Monster-comic work order" design system
    Loud, characterful chrome wrapped around a calm, usable booking form.
-   Design mockup only — nothing here is wired to a backend.
+   Design mockup only - nothing here is wired to a backend.
    ========================================================================= */
 
 :root {
@@ -39,7 +39,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Desktop "baked-in 150% zoom" — the site reads better at browser-zoom 150%,
+/* Desktop "baked-in 150% zoom" - the site reads better at browser-zoom 150%,
    so on computer-width screens we apply that with CSS `zoom` (not transform:
    scale). `zoom` reflows like real browser zoom: percentage widths resolve in
    the zoomed space, so everything is 1.5x with no horizontal scrollbar and the
@@ -194,7 +194,7 @@ a { color: inherit; }
 .field input::placeholder, .field textarea::placeholder { color: #a99b7d; }
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.15rem; }
 
-/* photo-upload dropzone — the element that broke; made obvious + on-brand */
+/* photo-upload dropzone - the element that broke; made obvious + on-brand */
 .dropzone {
   display: grid; place-items: center; text-align: center; gap: .5rem;
   padding: 1.7rem 1.2rem; cursor: pointer;
@@ -268,7 +268,7 @@ a { color: inherit; }
 }
 
 /* =========================================================================
-   HOME / LANDING PAGE  (additive — extends the system above; book.html
+   HOME / LANDING PAGE  (additive - extends the system above; book.html
    is untouched. Hero changes are scoped to .hero--home.)
    ========================================================================= */
 
@@ -307,7 +307,7 @@ a { color: inherit; }
 }
 .hero__stats .star { color: var(--red); -webkit-text-stroke: .4px var(--ink); }
 
-/* services — "what the shark hunts" */
+/* services - "what the shark hunts" */
 .targets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; }
 .target {
   background: var(--white); border: var(--edge) solid var(--ink); border-radius: var(--radius);
@@ -316,7 +316,7 @@ a { color: inherit; }
   display: flex; flex-direction: column; min-height: 360px;
 }
 .target:hover { transform: translate(-2px,-2px); box-shadow: var(--pop); }
-/* town cards have no signs list to fill the height — let them size to content */
+/* town cards have no signs list to fill the height - let them size to content */
 .targets--towns .target { min-height: 0; }
 .target__ico {
   width: 65px; height: 65px; display: grid; place-items: center; color: var(--red);
@@ -329,7 +329,7 @@ a { color: inherit; }
 .target__signs li { position: relative; padding-left: 1.2rem; font-size: .92rem; color: #3a3226; line-height: 1.4; }
 .target__signs li::before { content: ""; position: absolute; left: 0; top: .5em; width: 8px; height: 8px; background: var(--red); border: 1.5px solid var(--ink); border-radius: 2px; }
 
-/* the legend — the real comic-book cover as the signature */
+/* the legend - the real comic-book cover as the signature */
 .legend { display: grid; grid-template-columns: .82fr 1.18fr; gap: clamp(1.6rem, 5vw, 3.6rem); align-items: center; }
 .legend__art { justify-self: center; }
 .comic-frame {
@@ -384,7 +384,7 @@ a { color: inherit; }
 }
 
 /* =========================================================================
-   REVISION — own the full width + a real sticky header
+   REVISION - own the full width + a real sticky header
    ========================================================================= */
 
 /* ben-day / newsprint tooth on the paper sections, so the full-bleed width
@@ -400,7 +400,7 @@ a { color: inherit; }
   background-size: 15px 15px;
 }
 
-/* header nav (anchor links) — makes the bar read as a real header */
+/* header nav (anchor links) - makes the bar read as a real header */
 .bar__nav { display: flex; gap: .15rem; margin-left: 1.3rem; }
 .bar__nav a {
   font-family: var(--font-display); text-transform: uppercase; letter-spacing: .03em;

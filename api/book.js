@@ -5,7 +5,7 @@
 // fetch (Node 18+), so the site stays static with no node_modules / build step.
 //
 // Required environment variables (set in Vercel → Settings → Environment
-// Variables, never committed — see .env.example):
+// Variables, never committed - see .env.example):
 //   RESEND_API_KEY  Resend API key
 //   BOOKING_TO      destination inbox(es), comma-separated for more than one
 //   BOOKING_FROM    verified sender, e.g. "Toilet Shark <bookings@yourdomain>"
@@ -30,7 +30,7 @@ module.exports = async function handler(req, res) {
 
   const { RESEND_API_KEY, BOOKING_TO, BOOKING_FROM } = process.env;
   if (!RESEND_API_KEY || !BOOKING_TO || !BOOKING_FROM) {
-    // Misconfiguration is on us, not the visitor — log it and fail cleanly.
+    // Misconfiguration is on us, not the visitor - log it and fail cleanly.
     console.error("book: missing env config", {
       hasKey: Boolean(RESEND_API_KEY),
       hasTo: Boolean(BOOKING_TO),
@@ -56,7 +56,7 @@ module.exports = async function handler(req, res) {
   const problem = (body.problem || "").toString().trim();
   const honeypot = (body.fax || "").toString().trim();
 
-  // A bot filled the hidden field — pretend success, send nothing.
+  // A bot filled the hidden field - pretend success, send nothing.
   if (honeypot) return res.status(200).json({ ok: true });
 
   const missing = [];
@@ -102,7 +102,7 @@ module.exports = async function handler(req, res) {
   const payload = {
     from: BOOKING_FROM,
     to: BOOKING_TO.split(",").map((s) => s.trim()).filter(Boolean),
-    subject: `New booking — ${name}, ${phone}`,
+    subject: `New booking - ${name}, ${phone}`,
     html,
   };
   if (attachments.length) payload.attachments = attachments;
