@@ -136,7 +136,7 @@ a { color: inherit; }
 .frame {
   border: var(--edge) solid var(--ink); border-radius: var(--radius);
   background: var(--white); box-shadow: var(--pop); overflow: hidden;
-  transform: rotate(-2deg); max-width: 360px;
+  transform: rotate(-2deg); max-width: 480px;
 }
 .frame img { width: 100%; height: auto; }
 .hero__patch {
@@ -410,7 +410,7 @@ a { color: inherit; }
 .bar__nav a:hover, .bar__nav a:focus-visible { color: var(--ink); background: var(--gold); }
 
 /* hero uses more of the wider container on big screens */
-.hero--home .frame { max-width: 520px; }
+.hero--home .frame { max-width: 640px; }
 .hero--home .hero__in { gap: clamp(1.5rem, 5vw, 4rem); }
 
 @media (max-width: 900px) { .bar__nav { display: none; } }
