@@ -291,7 +291,8 @@ a { color: inherit; }
 .bar__book:hover { transform: translate(-1px,-1px); }
 
 /* hero (home): bigger mascot, stats sticker strip */
-.hero--home .frame { max-width: 440px; transform: rotate(-3deg); }
+.hero--home .frame { max-width: 440px; transform: rotate(-3deg);
+  background: transparent; border: 0; box-shadow: none; border-radius: 0; overflow: visible; }
 .hero--home .hero__patch { width: clamp(120px, 18vw, 178px); right: -22px; bottom: -26px; }
 .hero__phone {
   display: inline-flex; align-items: center; gap: .55rem; margin-top: 1.4rem; text-decoration: none;
